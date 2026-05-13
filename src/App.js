@@ -127,6 +127,14 @@ function App() {
       <div style={cardStyle}>
         <h3>IDOR Lab</h3>
         <button style={buttonStyle} onClick={() => fetchProfile(1)}>View Profile 1</button>
+        
+        {profile && (
+          <div style={{ marginTop: "15px", padding: "10px", background: "#fef3c7", borderRadius: "8px", border: "1px solid #f59e0b" }}>
+            <p><strong>Email:</strong> {profile.email}</p>
+            <p><strong>Role:</strong> {profile.role}</p>
+            <p><strong>Private Bio:</strong> {profile.bio || "No bio available"}</p>
+          </div>
+        )}
       </div>
 
       <div style={cardStyle}>
