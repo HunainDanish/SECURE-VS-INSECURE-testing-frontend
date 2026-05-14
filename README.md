@@ -1,70 +1,73 @@
-# Getting Started with Create React App
+# 🛡️ Full-Stack Security Lab: Vulnerability & AI-Defense
+A comprehensive educational platform designed to demonstrate the "Cause and Effect" of common web vulnerabilities and their modern remediations. This project features a unique Security Toggle that shifts the entire application architecture between an insecure, legacy state and a hardened, AI-protected environment.
+## 🚀 Features
+### Dynamic Security Toggle: 
+Real-time switching between Insecure and Secure modes.
+### Vulnerability Demonstrations: 
+Hands-on labs for SQL Injection, XSS, IDOR, and CSRF.
+### Cryptographic Hardening: 
+Implementation of SHA-512 hashing.
+### AI Moderation: 
+Natural Language Processing (NLP) layer to detect toxic content and anomalous behavior.
+### Cloud Ready: 
+Configured for local or cloud-based MySQL deployment.
+## 🛠️ Tech Stack
+- Frontend: React.js, Axios
+- Backend: Node.js, Express.js
+- Database: MySQL (Local or Cloud/TIDB)
+- Security/AI: Crypto-JS, Natural (NLP Library)
+## 📥 Installation & Setup
+# Database Configuration
+1. Run the following queries in your MySQL terminal to set up the schema and seed the initial admin user:
+SQLCREATE DATABASE secure_ecom;
+USE secure_ecom;
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(50) DEFAULT 'user'
+);
 
-## Available Scripts
+CREATE TABLE reviews (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    content TEXT NOT NULL
+);
 
-In the project directory, you can run:
+-- Seed Admin (Password: admin123)
+INSERT INTO users (email, password, role) VALUES 
+('admin@test.com', '482243d2ec9434860df100e4085f16c708764020a442e9734e569a710e206037a5089223e7f975877c86a3449339e0839e4e6f982a7a407f35b2721f57912d09', 'admin');
 
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+2. Backend Setup
+Bashcd backend
+npm install express mysql2 cors crypto-js natural dotenv
+4. Update DB credentials in server.js
+node server.js
+5. Frontend SetupBashcd frontend
+npm install axios
+npm start
+## 🧪 Laboratory Guide
+### Lab 1: SQL Injection & Hashing
+### Insecure Mode: 
+Login using ' OR '1'='1. The server will grant access because it concatenates raw strings into the query.
+### Secure Mode: 
+The attack fails. The server uses Parameterized Queries and hashes your input with SHA-512 to match the database.
+## Lab 2: Stored XSS (Cross-Site Scripting)
+### Insecure Mode: 
+Post a review: <img src=x onerror=alert('Hacked')>. The script executes immediately.Secure Mode: The same post is rendered as harmless text. React’s automatic escaping is used to neutralize the payload.
+## Lab 3: AI-Driven Content Moderation
+### Action: 
+Enable Secure Mode and then toggle AI Moderation.
+Test: Attempt to post a highly toxic comment (e.g., "I hate this app and everyone here").
+Result: The natural library calculates a sentiment score. If the score is too negative, the AI blocks the post at the application layer.
+## Lab 4: IDOR & CSRF
+### IDOR: 
+In secure mode, direct access to profile IDs is blocked via server-side authorization checks.
+### CSRF: 
+The "Place Order" button requires a custom security header (X-CSRF-TOKEN) in secure mode; otherwise, the transaction is rejected.
+# 📝 Troubleshooting
+401 Unauthorized: Ensure the hash in the DB is exactly 128 characters (no extra spaces).
+CORS Error: Ensure the frontend is on port 3000 and backend is on port 5000.
+MySQL Not Recognized: Add the MySQL bin folder to your System Environment Variables (PATH).
+# 🎓 Academic Disclaimer
+This project is for educational purposes only. It contains intentional vulnerabilities to demonstrate security flaws. Do not deploy the "Insecure Mode" logic to a public production environment.
